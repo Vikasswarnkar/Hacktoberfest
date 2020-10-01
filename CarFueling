@@ -1,0 +1,42 @@
+import java.util.*;
+
+import javax.swing.text.FlowView.FlowStrategy;
+
+import java.io.*;
+
+public class CarFueling {
+    static int computeMinRefills(int dist, int tank, int[] stops) {
+        int[] fStops = new int[stops.length + 2];
+        fStops[0] = 0;
+        fStops[fStops.length - 1] = dist;
+        for (int i = 0; i < stops.length; i++) {
+            fStops[i + 1] = stops[i];
+        }
+        int refills = 0;
+        int current = 0;
+        while (current <= stops.length) {
+            int last = current;
+            while (current <= stops.length && (fStops[current + 1] - fStops[last]) <= tank)
+                current++;
+            if (current == last)
+                return -1;
+            if (current <= stops.length)
+                refills++;
+        }
+        return refills;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int dist = scanner.nextInt();
+        int tank = scanner.nextInt();
+        int n = scanner.nextInt();
+        int stops[] = new int[n];
+        for (int i = 0; i < n; i++) {
+            stops[i] = scanner.nextInt();
+        }
+
+        System.out.println(computeMinRefills(dist, tank, stops));
+        scanner.close();
+    }
+}
